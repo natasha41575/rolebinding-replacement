@@ -1,0 +1,57 @@
+resources:
+- gcloud-config.yaml
+- rolebinding.yaml
+- clusterrole.yaml
+
+replacements:
+  - source:
+      kind: ConfigMap
+      name: gcloud-config.kpt.dev
+      fieldPath: data.projectID
+    targets:
+    - select:
+        kind: RoleBinding
+        name: appadmin
+      fieldPaths:
+        - subjects.[kind=Group].name
+      options:
+        create: true
+  - source:
+      kind: ConfigMap
+      name: gcloud-config.kpt.dev
+      fieldPath: data.namespace
+    targets:
+      - select:
+          kind: RoleBinding
+          name: appadmin
+        fieldPaths:
+          - subjects.[kind=Group].name
+        options:
+          delimiter: "-"
+          index: 99 # large number will suffix
+  - source:
+      kind: ClusterRole
+      name: appadmin
+      fieldPath: metadata.name
+    targets:
+      - select:
+          kind: RoleBinding
+          name: appadmin
+        fieldPaths:
+          - subjects.[kind=Group].name
+        options:
+          delimiter: "-"
+          index: 99 # large number will suffix
+  - source:
+      kind: ConfigMap
+      name: gcloud-config.kpt.dev
+      fieldPath: data.domain
+    targets:
+      - select:
+          kind: RoleBinding
+          name: appadmin
+        fieldPaths:
+          - subjects.[kind=Group].name
+        options:
+          delimiter: "@"
+          index: 99 # large number will suffix
