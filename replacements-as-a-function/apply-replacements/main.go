@@ -7,12 +7,12 @@ import (
 )
 
 func main() {
-	if err := sdk.AsMain(sdk.ResourceListProcessorFunc(setImageTags)); err != nil {
+	if err := sdk.AsMain(sdk.ResourceListProcessorFunc(applyReplacements)); err != nil {
 		os.Exit(1)
 	}
 }
 
-func setImageTags(rl *sdk.ResourceList) error {
+func applyReplacements(rl *sdk.ResourceList) error {
 	si := Replacements{}
 	if err := si.Config(rl.FunctionConfig); err != nil {
 		return err
