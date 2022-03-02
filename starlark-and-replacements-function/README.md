@@ -1,4 +1,5 @@
-# replace the role binding group with a go function leveraging kustomize's replacements filter
+# replace the rolebinding group with starlark to generate the string, and 
+# a go function leveraging kustomize's replacements filter to propagate the value
 
 ## Usage
 
@@ -8,7 +9,7 @@
 `docker build -t gcr.io/kpt-fn/apply-replacements:unstable .`
 
 ### Replace the rolebinding group
-`kpt fn eval --fn-config=configure-rolebinding-group.yaml --image-pull-policy=never --image=gcr.io/kpt-fn/apply-replacements:unstable`
+`kpt fn render --image-pull-policy=ifNotPresent`
 
 You will see the group name change in rolebinding.yaml to "myproject-myns-appadmin@example.com".
 
