@@ -1,31 +1,25 @@
 apiVersion: fn.kpt.dev/v1alpha1
 kind: StarlarkRun
 metadata:
-  name: configure-rolebinding-group.yaml
+  name: generate-rolebinding-group.yaml
   annotations:
     config.kubernetes.io/local-config: "true"
 source: |-
-  def group(resource_list, role):
+  def isMatchGvkn(r, apiVersion, kind, name):
+    return r["apiVersion"] == apiVersion and r["kind"] == kind and r.get("metadata").get("name") == name
+
+  def generate_group(resources, role):
     group = ""
-    for r in resource_list["items"]:
-      if r["apiVersion"] == "v1" and r["kind"] == "ConfigMap" and r.get("metadata").get("name") == "gcloud-config.kpt.dev":
-        group = r["data"]["projectID"] + "-" + r["data"]["namespace"] + "-" + role + "@" + r["data"]["domain"]
-    return group
+    value_store = {}
+    for r in resources:
+      if isMatchGvkn(r, "v1", "ConfigMap", "gcloud-config.kpt.dev"):
+        project = r["data"]["projectID"]
+        domain = r["data"]["domain"]
+      if isMatchGvkn(r, "v1", "ConfigMap", "kptfile.kpt.dev"):
+        namespace = r["data"]["name"]
+      if isMatchGvkn(r, "v1", "ConfigMap", "value-store"):
+        value_store = r
+    group = project + "-" + namespace + "-" + role + "@" + domain
+    value_store["data"]["group"] = group
 
-  def generate_configmap(resources, group):
-    configMap = {
-      "apiVersion": "v1",
-      "kind": "ConfigMap",
-      "metadata": {
-        "name": "rolebinding-group",
-        "annotations": {
-          "config.kubernetes.io/local-config": "true"
-        }
-      },
-      "data": {
-        "name": group,
-      }
-    }
-    resources.append(configMap)
-
-  generate_configmap(ctx.resource_list["items"], group(ctx.resource_list, "appadmin"))
+  generate_group(ctx.resource_list["items"], "app-admin")

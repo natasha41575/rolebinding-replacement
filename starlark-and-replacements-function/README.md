@@ -11,5 +11,6 @@
 ### Replace the rolebinding group
 `kpt fn render --image-pull-policy=ifNotPresent`
 
-You will see the group name change in rolebinding.yaml to "myproject-myns-appadmin@example.com".
+You will see the group name change in rolebinding.yaml to "project-order-service-app-admin@example.com".
+You will see the value of data.group in value-store.yaml to also change to "project-order-service-app-admin@example.com".
 

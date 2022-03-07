@@ -1,18 +1,18 @@
 apiVersion: fn.kpt.dev/v1alpha1
 kind: Replacements
 metadata:
-  name: configure-rolebinding-group
+  name: propagate-rolebinding-group
   annotations:
     config.kubernetes.io/local-config: "true"
 replacements:
   - source:
       kind: ConfigMap
-      name: rolebinding-group
-      fieldPath: data.name
+      name: value-store
+      fieldPath: data.group
     targets:
       - select:
           kind: RoleBinding
-          name: appadmin
+          name: app-admin
         fieldPaths:
           - subjects.[kind=Group].name
         options:

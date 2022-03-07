@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: appadmin
+  name: app-admin
   namespace: myns
 subjects:
 - kind: Group
@@ -11,5 +11,5 @@ subjects:
   name: sa
 roleRef:
   kind: ClusterRole
-  name: appadmin
+  name: app-admin
   apiGroup: rbac.authorization.k8s.io

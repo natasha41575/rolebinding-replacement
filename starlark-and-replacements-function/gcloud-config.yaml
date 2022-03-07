@@ -6,8 +6,8 @@ metadata:
     config.kubernetes.io/local-config: "true"
 data:
   domain: example.com
-  namespace: myns
+  namespace: my-ns
   orgId: ""
-  projectID: myproject
+  projectID: project
   region: us-west1
   zone: us-west1-a
