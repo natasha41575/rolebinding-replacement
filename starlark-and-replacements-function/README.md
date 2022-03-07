@@ -1,5 +1,10 @@
-# replace the rolebinding group with starlark to generate the string, and 
-# a go function leveraging kustomize's replacements filter to propagate the value
+We assume that the user has already used `kube-gen`
+to generate value-store.yaml, a ConfigMap that will be used to store the value to propagate.
+
+From there, we have two functions:
+
+1. Starlark to generate the rolebinding group
+2. Replacements to propagate the value to the rolebinding. 
 
 ## Usage
 
