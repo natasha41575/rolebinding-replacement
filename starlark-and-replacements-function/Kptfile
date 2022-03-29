@@ -10,3 +10,4 @@ pipeline:
       configPath: generate-rolebinding-group.yaml
     - image: gcr.io/kpt-fn/apply-replacements:unstable
       configPath: propagate-rolebinding-group.yaml
+
