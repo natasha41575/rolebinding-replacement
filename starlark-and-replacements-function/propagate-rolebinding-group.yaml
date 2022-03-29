@@ -1,5 +1,5 @@
 apiVersion: fn.kpt.dev/v1alpha1
-kind: Replacements
+kind: ApplyReplacements
 metadata:
   name: propagate-rolebinding-group
   annotations:
