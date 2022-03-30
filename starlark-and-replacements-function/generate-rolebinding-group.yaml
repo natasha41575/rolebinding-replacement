@@ -5,19 +5,18 @@ metadata:
   annotations:
     config.kubernetes.io/local-config: "true"
 source: |-
-  def isMatchGvkn(r, apiVersion, kind, name):
-    return r["apiVersion"] == apiVersion and r["kind"] == kind and r.get("metadata").get("name") == name
-
+  load("krmfn.star", "krmfn")
+  
   def generate_group(resources, role):
     group = ""
     value_store = {}
     for r in resources:
-      if isMatchGvkn(r, "v1", "ConfigMap", "gcloud-config.kpt.dev"):
+      if krmfn.match_gvkn(r, "v1", "ConfigMap", "gcloud-config.kpt.dev"):
         project = r["data"]["projectID"]
         domain = r["data"]["domain"]
-      if isMatchGvkn(r, "v1", "ConfigMap", "kptfile.kpt.dev"):
+      if krmfn.match_gvkn(r, "v1", "ConfigMap", "kptfile.kpt.dev"):
         namespace = r["data"]["name"]
-      if isMatchGvkn(r, "v1", "ConfigMap", "value-store"):
+      if krmfn.match_gvkn(r, "v1", "ConfigMap", "value-store"):
         value_store = r
     group = project + "-" + namespace + "-" + role + "@" + domain
     value_store["data"]["group"] = group
